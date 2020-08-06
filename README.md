@@ -2,6 +2,17 @@
                                                                                       
 This project provider an operator to manager yarn's node manager and resource manager. It support big data system smooth migrate to kuberenets.
 
+## Features
+* Automatically manager the yarn instance
+* Automatically register the yarn instance to yarn resource manager
+
+## Installation
+TODO
+
+
+## Architecture
+
+![Architecture Of Yarn Opterator](docs/images/architecture.png)
 
 ## Licensing
 
