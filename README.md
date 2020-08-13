@@ -6,9 +6,12 @@ This project provider an operator to manager yarn's node manager and resource ma
 * Automatically manager the yarn instance
 * Automatically register the yarn instance to yarn resource manager
 
+## Requirements
+
+* Kubernetes 1.10.5+
+
 ## Installation
 TODO
-
 
 ## Architecture
 
