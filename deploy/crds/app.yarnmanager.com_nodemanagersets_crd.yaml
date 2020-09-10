@@ -31,107 +31,6 @@ spec:
         spec:
           description: NodeManagerSetSpec defines the desired state of NodeManagerSet
           properties:
-            ClusterSource:
-              description: Represents the source of a yarn cluster. Only one of its
-                members may be specified.
-              properties:
-                mapReduceCluster:
-                  description: Open Source MapReduce struct.
-                  properties:
-                    clusterId:
-                      description: cluster unique id for cluster
-                      type: string
-                    config:
-                      description: map reduce config
-                      properties:
-                        rmActiveAddress:
-                          description: resource manager active address
-                          type: string
-                        rmActiveAdmin:
-                          description: resource manager active admin address
-                          type: string
-                        rmActiveHostname:
-                          description: resource manager active hostname
-                          type: string
-                        rmActiveScheduler:
-                          description: resource manager active scheduler
-                          type: string
-                        rmActiveTracker:
-                          description: resource manager active tracker
-                          type: string
-                        rmActiveWebapp:
-                          description: resource manager active webapp
-                          type: string
-                        rmStandbyAddress:
-                          description: resource manager standby address
-                          type: string
-                        rmStandbyAdmin:
-                          description: resource manager standby admin address
-                          type: string
-                        rmStandbyHostname:
-                          description: resource manager standby hostname
-                          type: string
-                        rmStandbyScheduler:
-                          description: resource manager standby scheduler
-                          type: string
-                        rmStandbyTracker:
-                          description: resource manager standby tracker
-                          type: string
-                        rmStandbyWebapp:
-                          description: resource manager standby webapp
-                          type: string
-                        rmZookeeperAddress:
-                          description: resource manager zookeeper address, comma separated
-                          type: string
-                        rmZookeeperPath:
-                          description: resource manager zookeeper path
-                          type: string
-                      required:
-                      - rmActiveAddress
-                      - rmActiveAdmin
-                      - rmActiveHostname
-                      - rmActiveScheduler
-                      - rmActiveTracker
-                      - rmActiveWebapp
-                      - rmStandbyAddress
-                      - rmStandbyAdmin
-                      - rmStandbyHostname
-                      - rmStandbyScheduler
-                      - rmStandbyTracker
-                      - rmStandbyWebapp
-                      - rmZookeeperAddress
-                      - rmZookeeperPath
-                      type: object
-                    identifier:
-                      description: identifier of emr flowId, be used to unique the
-                        yarn node
-                      format: int64
-                      type: integer
-                  required:
-                  - clusterId
-                  - config
-                  - identifier
-                  type: object
-                tEMapReduceCluster:
-                  description: Tencent cloud Elastic MapReduce struct.
-                  properties:
-                    clusterId:
-                      description: cluster unique id for emr cluster
-                      type: string
-                    generatesubmountpath:
-                      description: generate submount path enable
-                      type: boolean
-                    identifier:
-                      description: identifier of emr flowId, be used to unique the
-                        yarn node
-                      format: int64
-                      type: integer
-                  required:
-                  - clusterId
-                  - generatesubmountpath
-                  - identifier
-                  type: object
-              type: object
             count:
               description: 'INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
                 Important: Run "operator-sdk generate k8s" to regenerate code after
@@ -142,6 +41,102 @@ spec:
               items:
                 type: string
               type: array
+            mapReduceCluster:
+              description: Open Source MapReduce struct.
+              properties:
+                clusterId:
+                  description: cluster unique id for cluster
+                  type: string
+                config:
+                  description: map reduce config
+                  properties:
+                    rmActiveAddress:
+                      description: resource manager active address
+                      type: string
+                    rmActiveAdmin:
+                      description: resource manager active admin address
+                      type: string
+                    rmActiveHostname:
+                      description: resource manager active hostname
+                      type: string
+                    rmActiveScheduler:
+                      description: resource manager active scheduler
+                      type: string
+                    rmActiveTracker:
+                      description: resource manager active tracker
+                      type: string
+                    rmActiveWebapp:
+                      description: resource manager active webapp
+                      type: string
+                    rmStandbyAddress:
+                      description: resource manager standby address
+                      type: string
+                    rmStandbyAdmin:
+                      description: resource manager standby admin address
+                      type: string
+                    rmStandbyHostname:
+                      description: resource manager standby hostname
+                      type: string
+                    rmStandbyScheduler:
+                      description: resource manager standby scheduler
+                      type: string
+                    rmStandbyTracker:
+                      description: resource manager standby tracker
+                      type: string
+                    rmStandbyWebapp:
+                      description: resource manager standby webapp
+                      type: string
+                    rmZookeeperAddress:
+                      description: resource manager zookeeper address, comma separated
+                      type: string
+                    rmZookeeperPath:
+                      description: resource manager zookeeper path
+                      type: string
+                  required:
+                  - rmActiveAddress
+                  - rmActiveAdmin
+                  - rmActiveHostname
+                  - rmActiveScheduler
+                  - rmActiveTracker
+                  - rmActiveWebapp
+                  - rmStandbyAddress
+                  - rmStandbyAdmin
+                  - rmStandbyHostname
+                  - rmStandbyScheduler
+                  - rmStandbyTracker
+                  - rmStandbyWebapp
+                  - rmZookeeperAddress
+                  - rmZookeeperPath
+                  type: object
+                identifier:
+                  description: identifier of emr flowId, be used to unique the yarn
+                    node
+                  format: int64
+                  type: integer
+              required:
+              - clusterId
+              - config
+              - identifier
+              type: object
+            tEMapReduceCluster:
+              description: Tencent cloud Elastic MapReduce struct.
+              properties:
+                clusterId:
+                  description: cluster unique id for emr cluster
+                  type: string
+                generatesubmountpath:
+                  description: generate submount path enable
+                  type: boolean
+                identifier:
+                  description: identifier of emr flowId, be used to unique the yarn
+                    node
+                  format: int64
+                  type: integer
+              required:
+              - clusterId
+              - generatesubmountpath
+              - identifier
+              type: object
             template:
               description: PodTemplateSpec describes the data a pod should have when
                 created from a template
@@ -5861,8 +5856,6 @@ spec:
                   type: object
               type: object
           required:
-          - ClusterSource
-          - count
           - template
           type: object
         status:

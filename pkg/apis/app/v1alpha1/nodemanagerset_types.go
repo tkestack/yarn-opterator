@@ -101,9 +101,10 @@ type NodeManagerSetSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "operator-sdk generate k8s" to regenerate code after modifying this file
 	// Add custom validation using kubebuilder tags: https://book-v1.book.kubebuilder.io/beyond_basics/generating_crd.html
-	Count    int                    `json:"count, omitempty"`
-	Excludes []string               `json:"excludes,omitempty"`
-	Template corev1.PodTemplateSpec `json:"template" protobuf:"bytes,4,opt,name=template"`
+	Count         int                    `json:"count,omitempty" protobuf:"bytes,1,opt,name=count"`
+	Excludes      []string               `json:"excludes,omitempty" protobuf:"bytes,2,opt,name=excludes"`
+	Template      corev1.PodTemplateSpec `json:"template" protobuf:"bytes,3,opt,name=template"`
+	ClusterSource ClusterSource          `json:",inline" protobuf:"bytes,4,opt,name=clusterSource"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

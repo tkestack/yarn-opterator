@@ -137,6 +137,7 @@ func (in *NodeManagerSetSpec) DeepCopyInto(out *NodeManagerSetSpec) {
 		copy(*out, *in)
 	}
 	in.Template.DeepCopyInto(&out.Template)
+	in.ClusterSource.DeepCopyInto(&out.ClusterSource)
 	return
 }
 
