@@ -1,0 +1,36 @@
+apiVersion: app.yarnmanager.com/v1alpha1
+kind: NodeManagerSet
+metadata:
+  name: yarn-1
+spec:
+  count: 1
+  clusterSource:
+    clusterId: cls-xxxxxxx
+    identifier: aaaa
+    config:
+      rmActiveAddress: 10.0.0.8:5000
+      rmStandbyAddress: 10.0.0.15:5000
+      rmActiveAdmin: 10.0.0.8:5003
+      rmStandbyAdmin: 10.0.0.15:5003
+      rmActiveHostname: 10.0.0.8:5003
+      rmStandbyHostname: 10.0.0.15:5003
+      rmActiveTracker: 10.0.0.8:5002
+      rmStandbyTracker: 10.0.0.15:5002
+      rmActiveScheduler: 10.0.0.8:5001
+      rmStandbyScheduler: 10.0.0.15:5001
+      rmActiveWebapp: 10.0.0.8:5004
+      rmStandbyWebapp: 10.0.0.8:5005
+      rmZookeeperAddress: 10.0.0.16:2181,10.0.0.11:2181,10.0.0.7:2181
+      rmZookeeperPath: /aaa  
+  template:
+    spec:
+      containers:
+      - image: ccr.ccs.tencentyun.com/tkeimages/hadoop:v003
+        command:
+        - /bin/bash
+        args:
+        - -c
+        - sleep 36000
+        name: hadoop
+      hostNetwork: true
+      terminationGracePeriodSeconds: 3
