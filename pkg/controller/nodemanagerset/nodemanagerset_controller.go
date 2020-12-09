@@ -2,6 +2,9 @@ package nodemanagerset
 
 import (
 	"context"
+	"fmt"
+	"reflect"
+	"strconv"
 
 	appv1alpha1 "github.com/tkestack/yarn-opterator/pkg/apis/app/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
@@ -100,6 +103,8 @@ func (r *ReconcileNodeManagerSet) Reconcile(request reconcile.Request) (reconcil
 		return reconcile.Result{}, err
 	}
 
+	reqLogger.Info(fmt.Sprintf("%+v", instance))
+
 	// Define a new Pod object
 	pod := newPodForCR(instance)
 
@@ -134,20 +139,69 @@ func newPodForCR(cr *appv1alpha1.NodeManagerSet) *corev1.Pod {
 	labels := map[string]string{
 		"app": cr.Name,
 	}
+
+	podSpec := cr.Spec.Template.Spec.DeepCopy()
+	envs := getConfigEnv(cr)
+
+	for idx := range podSpec.Containers {
+		podSpec.Containers[idx].Env = append(podSpec.Containers[idx].Env, envs...)
+	}
+
 	return &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      cr.Name + "-pod",
 			Namespace: cr.Namespace,
 			Labels:    labels,
 		},
-		Spec: corev1.PodSpec{
-			Containers: []corev1.Container{
-				{
-					Name:    "busybox",
-					Image:   "busybox",
-					Command: []string{"sleep", "3600"},
-				},
-			},
-		},
+		Spec: *podSpec,
 	}
+}
+
+func getConfigEnv(cr *appv1alpha1.NodeManagerSet) []corev1.EnvVar {
+	var envs = []corev1.EnvVar{}
+
+	if cr.Spec.ClusterSource.MapReduceCluster != nil {
+		envs = append(envs, corev1.EnvVar{Name: "ClusterId", Value: cr.Spec.ClusterSource.MapReduceCluster.ClusterId})
+		envs = append(envs, corev1.EnvVar{Name: "Identifier", Value: strconv.Itoa(int(cr.Spec.ClusterSource.MapReduceCluster.Identifier))})
+
+		valueMaps := GetFieldNameAndValue(cr.Spec.ClusterSource.MapReduceCluster.Config)
+		for key := range valueMaps {
+			envs = append(envs, corev1.EnvVar{Name: key, Value: valueMaps[key]})
+		}
+
+	} else {
+		log.Info("bbbbbbbb")
+	}
+
+	return envs
+}
+
+//find struct field name and value
+func GetFieldNameAndValue(s interface{}) map[string]string {
+
+	var valueMaps = make(map[string]string)
+	t := reflect.TypeOf(s)
+	v := reflect.ValueOf(s)
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+
+	if t.Kind() != reflect.Struct {
+		return valueMaps
+	}
+
+	fieldNum := t.NumField()
+	for i := 0; i < fieldNum; i++ {
+		switch v.FieldByName(t.Field(i).Name).Kind() {
+		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+			valueMaps[t.Field(i).Name] = fmt.Sprintf("%d", v.FieldByName(t.Field(i).Name).Int())
+		case reflect.String:
+			valueMaps[t.Field(i).Name] = v.FieldByName(t.Field(i).Name).String()
+		default:
+			log.Info("Unsupported type, name %s", t.Field(i).Name)
+			continue
+		}
+	}
+
+	return valueMaps
 }
