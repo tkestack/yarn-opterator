@@ -8,7 +8,7 @@ This project provider an operator to manager yarn's node manager and resource ma
 
 ## Requirements
 
-* Kubernetes 1.10.5+
+* Kubernetes 1.10.5+,operator-sdk v0.16.0,go1.13.12+
 
 ## Installation
 TODO
