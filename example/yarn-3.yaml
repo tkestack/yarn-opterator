@@ -1,0 +1,44 @@
+apiVersion: app.yarnmanager.com/v1alpha1
+kind: NodeManagerSet
+metadata:
+  generation: 1
+  name: yarn-3
+  selfLink: /apis/app.yarnmanager.com/v1alpha1/namespaces/default/nodemanagersets/yarn-3
+spec:
+  clusterSource:
+    mapReduceCluster:
+      clusterId: cls-xxxxxxx
+      config:
+        rmActiveAddress: 10.0.0.8:5000
+        rmActiveAdmin: 10.0.0.8:5003
+        rmActiveHostname: 10.0.0.8:5003
+        rmActiveScheduler: 10.0.0.8:5001
+        rmActiveTracker: 10.0.0.8:5002
+        rmActiveWebapp: 10.0.0.8:5004
+        rmStandbyAddress: 10.0.0.15:5000
+        rmStandbyAdmin: 10.0.0.15:5003
+        rmStandbyHostname: 10.0.0.15:5003
+        rmStandbyScheduler: 10.0.0.15:5001
+        rmStandbyTracker: 10.0.0.15:5002
+        rmStandbyWebapp: 10.0.0.8:5005
+        rmZookeeperAddress: 10.0.0.16:2181,10.0.0.11:2181,10.0.0.7:2181
+        rmZookeeperPath: /aaa
+      identifier: 123456
+  count: 1
+  template:
+    spec:
+      containers:
+      - args:
+        - -c
+        - sleep 36000
+        command:
+        - /bin/bash
+        image: ccr.ccs.tencentyun.com/tkeimages/hadoop285:yarn5
+        name: test
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
+          privileged: false
+      hostNetwork: false
+      terminationGracePeriodSeconds: 3
